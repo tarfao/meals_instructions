@@ -27,7 +27,6 @@ app.get('/search', (req, res) => {
     //para definir os parâmetros do slice devemos calcular onde ele deve parar.
     limit = parseInt(limit);
     offset = parseInt(offset);
-    console.log(limit, offset, strMealSearch)
     //busco pelas refeições com nomes semelhantes, e retorno apenas o limite informado, para fazer a paginação
     const mealsFinded = meals_obj.meals.filter(meal => meal.strMeal.includes(strMealSearch)).slice(offset, offset+limit);
     return res.status(200).json(mealsFinded);
