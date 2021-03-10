@@ -17,6 +17,7 @@
           id="text-input-id-1"
           placeholder="Search..."
           class="slds-input slds-p-around_x-small"
+          v-model="searchMeal"
         />
       </div>
     </div>
@@ -87,7 +88,7 @@ export default {
   data() {
     return {
       arr_meals: [],
-      search_meal: ''
+      searchMeal: ''
     };
   },
   async mounted() {
@@ -96,5 +97,11 @@ export default {
     );
     this.arr_meals = data;
   },
+  watch: {
+    searchMeal: async function(strSearch){
+      const { data } = await axios.get(`http://localhost:8000/search?limit=15&offset=0&strMealSearch=${strSearch}`);
+      this.arr_meals = data;
+    }
+  }
 };
 </script>
