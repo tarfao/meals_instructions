@@ -31,7 +31,6 @@
 <script>
 import axios from "axios";
 import TableMeals from "../../components/TableMeals.vue";
-import { LIMIT, URI } from "./utils/const";
 
 export default {
   name: "Home",
@@ -48,16 +47,16 @@ export default {
   },
 
   async mounted() {
-    const { data } = await axios.get(`${URI}?limit=${LIMIT}&offset=0`);
+    const { data } = await axios.get(`${process.env.VUE_APP_URI}?limit=${process.env.VUE_APP_LIMIT}&offset=0`);
     this.arr_meals = [...this.arr_meals, ...data];
-    console.log(this.arr_meals);
+    console.log(process.env.VUE_APP_URI);
     window.addEventListener("scroll", this.handleScroll);
   },
 
   watch: {
     searchMeal: async function (strSearch) {
       const { data } = await axios.get(
-        `${URI}/search?limit=${LIMIT}&offset=0&strMealSearch=${strSearch}`
+        `${process.env.VUE_APP_URI}/search?limit=${process.env.VUE_APP_LIMIT}&offset=0&strMealSearch=${strSearch}`
       );
       this.arr_meals = data;
     },
@@ -69,11 +68,11 @@ export default {
         let response;
         if (this.searchMeal) {
           response = await axios.get(
-            `${URI}/search?limit=${LIMIT}&offset=${this.arr_meals.length}&strMealSearch=${this.searchMeal}`
+            `${process.env.VUE_APP_URI}/search?limit=${process.env.VUE_APP_LIMIT}&offset=${this.arr_meals.length}&strMealSearch=${this.searchMeal}`
           );
         } else {
           response = await axios.get(
-            `${URI}?limit=${LIMIT}&offset=${this.arr_meals.length}`
+            `${process.env.VUE_APP_URI}?limit=${process.env.VUE_APP_LIMIT}&offset=${this.arr_meals.length}`
           );
         }
         this.arr_meals = [...this.arr_meals, ...response.data];
