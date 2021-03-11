@@ -31,7 +31,7 @@
 <script>
 import axios from "axios";
 import TableMeals from "../../components/TableMeals.vue";
-import { LIMIT, URI } from './utils/const'
+import { LIMIT, URI } from "./utils/const";
 
 export default {
   name: "Home",
@@ -49,8 +49,8 @@ export default {
 
   async mounted() {
     const { data } = await axios.get(`${URI}?limit=${LIMIT}&offset=0`);
-    this.arr_meals = data;
-
+    this.arr_meals = [...this.arr_meals, ...data];
+    console.log(this.arr_meals);
     window.addEventListener("scroll", this.handleScroll);
   },
 
@@ -64,26 +64,35 @@ export default {
   },
 
   methods: {
-    handleScroll() {
-      window.addEventListener("scroll", () => {
-        const scrollHeight = document.documentElement.scrollHeight;
-        const scrollTop = document.documentElement.scrollTop;
-        const clientHeight = document.documentElement.clientHeight;
-        //scrollHeight - scrollTop = clientHeight
-        const rows_meals = document.getElementsByClassName('slds-hint-parent');
-        const last_row_meal = rows_meals[rows_meals.length - 1];
-        const scrolling = scrollHeight - scrollTop;
-        const endScrollingPlusHeightRow = clientHeight + last_row_meal.offsetHeight;
-
-        if(scrolling <= endScrollingPlusHeightRow){
-          console.log('scrolllllll')
+    async getMealsSearch() {
+      if (this.arr_meals.length < 25 && this.arr_meals.length !== 0) {
+        let response;
+        if (this.searchMeal) {
+          response = await axios.get(
+            `${URI}/search?limit=${LIMIT}&offset=${this.arr_meals.length}&strMealSearch=${this.searchMeal}`
+          );
+        } else {
+          response = await axios.get(
+            `${URI}?limit=${LIMIT}&offset=${this.arr_meals.length}`
+          );
         }
-      });
+        this.arr_meals = [...this.arr_meals, ...response.data];
+      }
+    },
+    handleScroll() {
+      const scrollHeight = document.documentElement.scrollHeight;
+      const scrollTop = document.documentElement.scrollTop;
+      const clientHeight = document.documentElement.clientHeight;
+      const scrolling = scrollHeight - scrollTop;
+
+      if (scrolling === clientHeight) {
+        this.getMealsSearch();
+      }
     },
   },
 
-  unmounted(){
-    window.removeEventListener('scroll', this.handleScroll);
-  }
+  unmounted() {
+    window.removeEventListener("scroll", this.handleScroll);
+  },
 };
 </script>
