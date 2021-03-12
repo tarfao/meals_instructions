@@ -23,6 +23,11 @@ Um desafio proposto pela Topi, para listar e buscar meals, ou refeições.
 `npm run serve`
 * Para o teste execute: `npm run test`
 
+## Recursos
+
+* Get ('/'): Utilizando como parametros via query o limit e offset, sendo ambos números inteiros.
+* Get ('/search'): Utilizando com parâmetros via query o limit, offset e a strMealSearch a ser pesquisada.
+
 # Requisitos
 
 * Os componentes se ajustam ao mobile, de acordo com a biblioteca de componentes Lightning Design.
@@ -32,8 +37,8 @@ No teste eu apenas exibi a imagem e não fiz o link para o vídeo pois não sabi
 
 # Deploys
 
-* Frontend = Vercel
-* Backend = Heroku
+* Frontend = Vercel https://frontende-meals.vercel.app/
+* Backend = Heroku https://back-meal.herokuapp.com/
 
 # Observações
 
