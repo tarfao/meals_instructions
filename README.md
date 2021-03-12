@@ -23,7 +23,7 @@ Um desafio proposto pela Topi, para listar e buscar meals, ou refeições.
 `npm run serve`
 * Para o teste execute: `npm run test`
 
-## Recursos
+### Recursos
 
 * Get ('/'): Utilizando como parametros via query o limit e offset, sendo ambos números inteiros.
 * Get ('/search'): Utilizando com parâmetros via query o limit, offset e a strMealSearch a ser pesquisada.
