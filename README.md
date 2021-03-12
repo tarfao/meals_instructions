@@ -2,8 +2,26 @@
 Um desafio proposto pela Topi, para listar e buscar meals, ou refeições.
 
 # Tecnologias utilizadas
-* Reactjs
+
+## Frontend
+* VueJs
+* Lightning Design
+* Axios
+* Vuex
+
+### Execução
+`npm install`
+`npm run serve`
+
+## Backend
 * NodeJS
+* Express
+* Jest
+
+### Execução
+`npm install`
+`npm run serve`
+* Para o teste execute: `npm run test`
 
 # Requisitos
 
