@@ -25,6 +25,9 @@
       </div>
     </div>
     <table-meals v-bind:arr_meals="arr_meals" />
+    <h1 v-if="!this.arr_meals.length" class="slds-text-heading_large slds-text-align_center slds-m-top_xx-large">
+      There's not meal with this name!
+    </h1>
   </div>
 </template>
 
