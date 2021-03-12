@@ -47,35 +47,61 @@ export default {
   },
 
   async mounted() {
-    const { data } = await axios.get(`${process.env.VUE_APP_URI}?limit=${process.env.VUE_APP_LIMIT}&offset=0`);
-    this.arr_meals = [...this.arr_meals, ...data];
-    console.log(process.env.VUE_APP_URI);
-    window.addEventListener("scroll", this.handleScroll);
+    try {
+      const { data } = await axios.get(
+        `${process.env.VUE_APP_URI}?limit=${process.env.VUE_APP_LIMIT}&offset=0`
+      );
+      this.arr_meals = [...this.arr_meals, ...data];
+      window.addEventListener("scroll", this.handleScroll);
+      //this.$store.commit("enableToast", { show: true});
+    } catch (error) {
+      this.$store.commit("enableToast", {
+        theme: "error",
+        show: true,
+        msg: error.response.data.errors[0],
+      });
+    }
   },
 
   watch: {
     searchMeal: async function (strSearch) {
-      const { data } = await axios.get(
-        `${process.env.VUE_APP_URI}/search?limit=${process.env.VUE_APP_LIMIT}&offset=0&strMealSearch=${strSearch}`
-      );
-      this.arr_meals = data;
+      try {
+        const { data } = await axios.get(
+          `${process.env.VUE_APP_URI}/search?limit=${process.env.VUE_APP_LIMIT}&offset=0&strMealSearch=${strSearch}`
+        );
+        this.arr_meals = data;
+      } catch (error) {
+        this.$store.commit("enableToast", {
+          theme: "slds-theme_success",
+          show: true,
+          msg: error.response.data.errors[0],
+        });
+      }
     },
   },
 
   methods: {
     async getMealsSearch() {
-      if (this.arr_meals.length < 25 && this.arr_meals.length !== 0) {
-        let response;
-        if (this.searchMeal) {
-          response = await axios.get(
-            `${process.env.VUE_APP_URI}/search?limit=${process.env.VUE_APP_LIMIT}&offset=${this.arr_meals.length}&strMealSearch=${this.searchMeal}`
-          );
-        } else {
-          response = await axios.get(
-            `${process.env.VUE_APP_URI}?limit=${process.env.VUE_APP_LIMIT}&offset=${this.arr_meals.length}`
-          );
+      try {
+        if (this.arr_meals.length < 25 && this.arr_meals.length !== 0) {
+          let response;
+          if (this.searchMeal) {
+            response = await axios.get(
+              `${process.env.VUE_APP_URI}/search?limit=${process.env.VUE_APP_LIMIT}&offset=${this.arr_meals.length}&strMealSearch=${this.searchMeal}`
+            );
+          } else {
+            response = await axios.get(
+              `${process.env.VUE_APP_URI}?limit=${process.env.VUE_APP_LIMIT}&offset=${this.arr_meals.length}`
+            );
+          }
+          this.arr_meals = [...this.arr_meals, ...response.data];
         }
-        this.arr_meals = [...this.arr_meals, ...response.data];
+      } catch (error) {
+        this.$store.commit("enableToast", {
+          theme: "error",
+          show: true,
+          msg: error.response.data.errors[0],
+        });
       }
     },
     handleScroll() {
